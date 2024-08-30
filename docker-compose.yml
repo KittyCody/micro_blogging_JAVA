@@ -1,0 +1,35 @@
+version: '3.8'
+
+services:
+  database:
+    image: postgres:latest
+    environment:
+      POSTGRES_DB: micro_blog_db
+      POSTGRES_USER: micro_blog_user
+      POSTGRES_PASSWORD: no_secrets_among_devs
+    ports:
+      - "6432:5432"
+    volumes:
+      - micro-blog-postgres_data:/var/lib/postgresql/data
+    networks:
+      - blogging
+
+  test-database:
+    image: postgres:latest
+    environment:
+      POSTGRES_DB: micro_blog_test_db
+      POSTGRES_USER: micro_blog_test_user
+      POSTGRES_PASSWORD: no_secrets_among_devs
+    ports:
+      - "7432:5432"
+    volumes:
+      - micro-blog-test-postgres_data:/var/lib/postgresql/data
+    networks:
+      - blogging
+
+volumes:
+  micro-blog-postgres_data:
+  micro-blog-test-postgres_data:
+
+networks:
+  blogging:
