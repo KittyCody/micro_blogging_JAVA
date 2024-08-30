@@ -1,9 +1,7 @@
 package io.micro_blogger.server.service.security;
-
 import org.springframework.web.multipart.MultipartFile;
-
-import java.io.IOException;
+import io.micro_blogger.server.common.Result;
 
 public interface S3Service {
-    String uploadImage(MultipartFile imageFile) throws IOException;
+    Result<String> uploadImage(MultipartFile imageFile);
 }
