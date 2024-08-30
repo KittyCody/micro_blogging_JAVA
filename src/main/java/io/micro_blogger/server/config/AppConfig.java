@@ -35,5 +35,4 @@ public class AppConfig {
     public TokenService tokenService() {
         return new TokenServiceImpl();
     }
-
 }
