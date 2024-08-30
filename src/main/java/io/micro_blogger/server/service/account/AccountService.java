@@ -9,5 +9,4 @@ import java.util.UUID;
 public interface AccountService extends UserDetailsService {
     Optional<Account> findById(UUID accountId);
 
-    Optional<Account> findByUsername(String username);
 }

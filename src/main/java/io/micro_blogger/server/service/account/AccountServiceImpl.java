@@ -3,7 +3,6 @@ package io.micro_blogger.server.service.account;
 import io.micro_blogger.server.model.Account;
 import io.micro_blogger.server.model.CustomUserDetails;
 import io.micro_blogger.server.repository.AccountRepo;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -30,11 +29,6 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public Optional<Account> findById(UUID accountId) {
         return accountRepository.findById(accountId);
-    }
-
-    @Override
-    public Optional<Account> findByUsername(String username) {
-        return accountRepository.findByUsername(username);
     }
 
     @Override

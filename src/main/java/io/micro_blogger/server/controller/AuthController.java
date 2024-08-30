@@ -55,6 +55,7 @@ public class AuthController {
         if (error == CommonErrors.PASSWORD_TOO_SHORT) return HttpStatus.BAD_REQUEST;
         if (error == CommonErrors.ACCOUNT_CREDENTIALS_MISMATCH) return HttpStatus.UNAUTHORIZED;
         if (error == CommonErrors.ENTITY_NOT_PRESENT) return HttpStatus.NOT_FOUND;
+        if (error == CommonErrors.ACCESS_DENIED ) return HttpStatus.FORBIDDEN;
 
         return HttpStatus.INTERNAL_SERVER_ERROR;
     }

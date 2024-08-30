@@ -23,7 +23,6 @@ import java.util.Date;
 
 @Service
 public class AuthServiceImpl implements AuthService {
-
     private final AccountRepo userRepo;
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
