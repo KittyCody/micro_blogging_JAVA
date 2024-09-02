@@ -26,8 +26,7 @@ public class FollowController {
             @AuthenticationPrincipal Jwt jwt) {
 
         String followerUsername = getUsernameFromJwt(jwt);
-        String followeeUsername = followUserRequest.getUsername();
-
+        String followeeUsername = String.valueOf(followUserRequest);
         Result<FollowViewModel> result = followService.followUser(followerUsername, followeeUsername);
         return buildResponse(result);
     }
@@ -38,7 +37,6 @@ public class FollowController {
             @AuthenticationPrincipal Jwt jwt) {
 
         String followerUsername = getUsernameFromJwt(jwt);
-
         Result<Void> result = followService.unfollowUser(followerUsername, username);
         return buildResponse(result);
     }
@@ -49,7 +47,6 @@ public class FollowController {
             @AuthenticationPrincipal Jwt jwt) {
 
         String requestingUsername = getUsernameFromJwt(jwt);
-
         Result<List<String>> result = followService.getFollowers(requestingUsername, username);
         return buildResponse(result);
     }
@@ -60,7 +57,6 @@ public class FollowController {
             @AuthenticationPrincipal Jwt jwt) {
 
         String requestingUsername = getUsernameFromJwt(jwt);
-
         Result<List<String>> result = followService.getFollowees(requestingUsername, username);
         return buildResponse(result);
     }

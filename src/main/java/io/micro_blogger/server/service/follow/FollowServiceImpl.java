@@ -14,7 +14,6 @@ import io.micro_blogger.server.viewmodel.PostViewModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -94,7 +93,7 @@ public class FollowServiceImpl implements FollowService {
 
     @Override
     public boolean isFollower(UUID followerId, UUID followedId) {
-        return followRepo.existsByFollowerIdAndFolloweeId(followerId, followedId);
+        return !followRepo.existsByFollowerIdAndFolloweeId(followerId, followedId);
     }
 
     private Account getAccountByUsername(String username) {

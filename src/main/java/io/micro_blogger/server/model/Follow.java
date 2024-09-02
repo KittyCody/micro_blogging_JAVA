@@ -25,7 +25,6 @@ public class Follow {
     @Column(updatable = false, nullable = false)
     private LocalDateTime followedAt;
 
-    //default constr.
     public Follow() {
         this.followedAt = LocalDateTime.now();
     }
