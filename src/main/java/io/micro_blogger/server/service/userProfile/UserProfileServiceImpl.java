@@ -1,4 +1,5 @@
 package io.micro_blogger.server.service.userProfile;
+
 import io.micro_blogger.server.common.CommonErrors;
 import io.micro_blogger.server.dto.UpdateUserProfileRequest;
 import io.micro_blogger.server.model.Account;
@@ -17,7 +18,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
-
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
@@ -63,7 +63,6 @@ public class UserProfileServiceImpl implements UserProfileService {
             return Result.failure(CommonErrors.ENTITY_NOT_PRESENT);
         }
 
-        // Update fields
         if (request.getBiography() != null) {
             userProfile.setBio(request.getBiography());
         }
@@ -79,7 +78,6 @@ public class UserProfileServiceImpl implements UserProfileService {
 
         userProfileRepository.save(userProfile);
 
-        // Update security context
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication != null) {
             UserDetails newUserDetails = userDetailsService.loadUserByUsername(userProfile.getUsername());
@@ -139,7 +137,7 @@ public class UserProfileServiceImpl implements UserProfileService {
         }
 
         try {
-            String avatarUrl = s3Service.uploadImage(avatarFile);
+            String avatarUrl = String.valueOf(s3Service.uploadImage(avatarFile));
             userProfile.setAvatar(avatarUrl);
             userProfileRepository.save(userProfile);
             return Result.success(toResponse(userProfile));

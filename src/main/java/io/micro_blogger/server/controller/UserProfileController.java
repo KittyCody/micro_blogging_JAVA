@@ -20,11 +20,7 @@ public class UserProfileController {
 
     @Autowired
     private UserProfileService userProfileService;
-
-//    /**
-//     * @param username
-//     * @return
-//     */
+    private ApiError apiError;
 
     @GetMapping("/{username}")
     public ResponseEntity<UserProfileViewModel> getUserProfile(@PathVariable String username) {
@@ -100,6 +96,7 @@ public class UserProfileController {
     }
 
     private UserProfileViewModel createErrorViewModel(ApiError error) {
+        this.apiError = error;
         return new UserProfileViewModel(
                 null,
                 null,

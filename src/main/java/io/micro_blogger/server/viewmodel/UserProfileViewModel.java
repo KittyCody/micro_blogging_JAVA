@@ -1,5 +1,4 @@
 package io.micro_blogger.server.viewmodel;
-
 import java.time.LocalDateTime;
 
 public record UserProfileViewModel(
