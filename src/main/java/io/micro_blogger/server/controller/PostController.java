@@ -19,7 +19,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
 import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
@@ -100,7 +99,7 @@ public class PostController {
     public ResponseEntity<List<PostViewModel>> getPostsByTagsContaining(
             @PathVariable("accountId") UUID accountId,
             @RequestParam("tag") String tag) {
-        // Ensure the search works regardless of case and leading #
+        // Ensure the search works regardless of case and leading ^^
         tag = tag.startsWith("#") ? tag.substring(1) : tag;
         tag = tag.toLowerCase();
 

@@ -8,7 +8,6 @@ public record CreatePostRequest(
         @NotBlank(message = "description:must_not_be_blank")
         @Size(max = 255, message = "description:too_long")
         String description,
-
         Set<String> tags
 ) {
 }
