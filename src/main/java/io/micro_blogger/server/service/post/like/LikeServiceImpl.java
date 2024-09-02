@@ -12,7 +12,6 @@ import io.micro_blogger.server.service.follow.FollowService;
 import io.micro_blogger.server.service.notification.NotificationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.UUID;
@@ -58,7 +57,7 @@ public class LikeServiceImpl implements LikeService {
         Account account = accountOptional.get();
         UUID postCreatorId = post.getAccount().getId();
 
-        if (!accountId.equals(postCreatorId) && !followService.isFollower(accountId, postCreatorId)) {
+        if (!accountId.equals(postCreatorId) && followService.isFollower(accountId, postCreatorId)) {
             return Result.failure(CommonErrors.FORBIDDEN_OPERATION);
         }
 
@@ -85,7 +84,7 @@ public class LikeServiceImpl implements LikeService {
         Post post = comment.getPost();
         UUID postCreatorId = post.getAccount().getId();
 
-        if (!accountId.equals(postCreatorId) && !followService.isFollower(accountId, postCreatorId)) {
+        if (!accountId.equals(postCreatorId) && followService.isFollower(accountId, postCreatorId)) {
             return Result.failure(CommonErrors.FORBIDDEN_OPERATION);
         }
 
@@ -115,12 +114,12 @@ public class LikeServiceImpl implements LikeService {
 
     private Account getAccount(UUID accountId) {
         return accountRepository.findById(accountId)
-                .orElseThrow(() -> new RuntimeException(CommonErrors.ENTITY_NOT_PRESENT.getMessage()));
+                .orElseThrow(() -> new RuntimeException(String.valueOf(CommonErrors.ENTITY_NOT_PRESENT)));
     }
 
     private Comment getComment(UUID commentId) {
         return (Comment) commentRepository.findById(commentId)
-                .orElseThrow(() -> new RuntimeException(CommonErrors.ENTITY_NOT_PRESENT.getMessage()));
+                .orElseThrow(() -> new RuntimeException(String.valueOf(CommonErrors.ENTITY_NOT_PRESENT)));
     }
 
     private Like createLike(Account account, Post post, Comment comment) {

@@ -1,5 +1,4 @@
 package io.micro_blogger.server.model;
-
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
