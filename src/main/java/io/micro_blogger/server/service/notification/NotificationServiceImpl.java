@@ -6,7 +6,6 @@ import io.micro_blogger.server.repository.NotificationRepo;
 import io.micro_blogger.server.viewmodel.NotificationViewModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;

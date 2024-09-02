@@ -30,12 +30,14 @@ public class Notification {
     private String message;
 
     private LocalDateTime createdAt;
+    private UUID postId1;
+    private UUID commentId1;
 
     public void setCommentId(UUID commentId) {
-
+        commentId1 = commentId;
     }
 
     public void setPostId(UUID postId) {
-
+        postId1 = postId;
     }
 }
