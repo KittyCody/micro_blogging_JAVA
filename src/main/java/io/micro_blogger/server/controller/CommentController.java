@@ -1,5 +1,4 @@
 package io.micro_blogger.server.controller;
-
 import io.micro_blogger.server.dto.CreateCommentRequest;
 import io.micro_blogger.server.dto.UpdateCommentRequest;
 import io.micro_blogger.server.service.post.comment.CommentService;

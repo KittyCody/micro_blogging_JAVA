@@ -73,7 +73,6 @@ public class CommentServiceImpl implements CommentService {
 
         comment = commentRepository.save(comment);
 
-        // Send notification to the post creator
         notificationService.sendNotification(postCreatorId, accountId, NotificationType.COMMENT, postId, comment.getId(),
                 account.getUsername() + " commented on your post.");
 
@@ -105,11 +104,9 @@ public class CommentServiceImpl implements CommentService {
 
         reply = commentRepository.save(reply);
 
-        // Notify the comment creator
         notificationService.sendNotification(parentComment.getAccount().getId(), accountId, NotificationType.COMMENT, parentComment.getPost().getId(), reply.getId(),
                 account.getUsername() + " replied to your comment.");
 
-        // Notify the reply creator if this comment is a reply
         if (parentComment.getParentComment() != null) {
             notificationService.sendNotification(parentComment.getParentComment().getAccount().getId(), accountId, NotificationType.COMMENT, parentComment.getPost().getId(), reply.getId(),
                     account.getUsername() + " replied to a reply you made.");
