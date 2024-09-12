@@ -1,9 +1,11 @@
 package io.micro_blogger.server.service.security;
 
-import com.amazonaws.AmazonServiceException;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
+import io.micro_blogger.server.common.ApiError;
+import io.micro_blogger.server.common.CommonErrors;
+import io.micro_blogger.server.common.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -28,14 +30,18 @@ public class S3ServiceImpl implements S3Service {
     }
 
     @Override
-    public String uploadImage(MultipartFile imageFile) throws IOException {
+    public Result<String> uploadImage(MultipartFile imageFile) {
+        if (imageFile.isEmpty()) {
+            return Result.failure(CommonErrors.NULL_IMAGE_FILE);
+        }
+
         if (imageFile.getSize() > MAX_FILE_SIZE) {
-            throw new IOException("File size exceeds limit of " + MAX_FILE_SIZE + " bytes.");
+            return Result.failure(new ApiError("file:too_large", "File size exceeds limit of " + MAX_FILE_SIZE + " bytes."));
         }
 
         String contentType = imageFile.getContentType();
         if (!isValidImageType(contentType)) {
-            throw new IOException("Invalid image type: " + contentType);
+            return Result.failure(new ApiError("image:invalid_type", "Invalid image type: " + contentType));
         }
 
         String fileName = UUID.randomUUID() + "_" + imageFile.getOriginalFilename();
@@ -47,14 +53,17 @@ public class S3ServiceImpl implements S3Service {
 
             PutObjectRequest request = new PutObjectRequest(bucketName, fileName, inputStream, metadata);
             amazonS3.putObject(request);
-        } catch (AmazonServiceException e) {
-            throw new IOException("Error uploading file to S3: " + e.getMessage(), e);
-        }
 
-        return amazonS3.getUrl(bucketName, fileName).toString();
+            String fileUrl = amazonS3.getUrl(bucketName, fileName).toString();
+            return Result.success(fileUrl);
+        } catch (IOException e) {
+            return Result.failure(new ApiError("s3:upload_error", "Error uploading file: " + e.getMessage()));
+        } catch (Exception e) {
+            return Result.failure(new ApiError("s3:general_error", "Unexpected error occurred: " + e.getMessage()));
+        }
     }
 
     private boolean isValidImageType(String contentType) {
-        return contentType.equals("image/jpeg") || contentType.equals("image/png");
+        return contentType != null && (contentType.equals("image/jpeg") || contentType.equals("image/png"));
     }
 }
