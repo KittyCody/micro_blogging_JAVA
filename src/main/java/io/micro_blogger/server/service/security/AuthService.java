@@ -7,6 +7,7 @@ import io.micro_blogger.server.viewmodel.AuthenticationViewModel;
 import io.micro_blogger.server.viewmodel.RegistrationViewModel;
 
 public interface AuthService {
+
     Result<RegistrationViewModel> registerAccount(RegisterAccountRequest request);
 
     Result<AuthenticationViewModel> authenticateAccount(AuthenticateAccountRequest request);

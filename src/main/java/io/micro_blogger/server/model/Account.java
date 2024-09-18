@@ -68,14 +68,4 @@ public class Account implements UserDetails {
         return List.of();
     }
 
-    @Override
-    public String getPassword() {
-        return this.password;
-    }
-
-    @Override
-    public String getUsername() {
-        return this.username;
-    }
-
 }
