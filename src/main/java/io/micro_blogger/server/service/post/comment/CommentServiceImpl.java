@@ -45,42 +45,32 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public Result<CommentViewModel> addCommentToPost(UUID postId, UUID accountId,
-                                                     CreateCommentRequest createCommentRequest) {
-        Optional<Post> postOptional = postRepository.findById(postId);
-        if (postOptional.isEmpty()) {
-            return Result.failure(CommonErrors.ENTITY_NOT_PRESENT);
-        }
+        public Result<CommentViewModel> addCommentToPost(UUID postId, UUID accountId,
+                                                         CreateCommentRequest createCommentRequest) {
+            Optional<Post> postOptional = postRepository.findById(postId);
+            Optional<Account> accountOptional = accountService.findById(accountId);
 
-        Optional<Account> accountOptional = accountService.findById(accountId);
-        if (accountOptional.isEmpty()) {
-            return Result.failure(CommonErrors.ENTITY_NOT_PRESENT);
-        }
+            Result<Post> postResult = validatePost(postOptional);
+            if (postResult.isFailure()) return Result.failure(postResult.getError());
 
-        Post post = postOptional.get();
-        Account account = accountOptional.get();
-        UUID postCreatorId = post.getAccount().getId();
+            Result<Account> accountResult = validateAccount(accountOptional);
+            if (accountResult.isFailure()) return Result.failure(accountResult.getError());
 
-        if (!followService.isFollower(accountId, postCreatorId)) {
+            Post post = postResult.getValue();
+            Account account = accountResult.getValue();
+
+            if (!isFollower(accountId, post.getAccount().getId())) {
             return Result.failure(CommonErrors.FORBIDDEN_OPERATION);
+            }
+
+            Comment comment = createAndSaveComment(post, account, createCommentRequest);
+            sendNotification(post.getAccount().getId(), account, post, comment);
+
+            return Result.success(convertToCommentViewModel(comment));
         }
 
-        Comment comment = new Comment();
-        comment.setPost(post);
-        comment.setAccount(account);
-        comment.setContent(createCommentRequest.getContent());
-        comment.setCreatedAt(LocalDateTime.now());
-
-        comment = commentRepository.save(comment);
-
-        notificationService.sendNotification(postCreatorId, accountId, NotificationType.COMMENT, postId, comment.getId(),
-                account.getUsername() + " commented on your post.");
-
-        return Result.success(convertToCommentViewModel(comment));
-    }
-
-    @Override
-    public Result<CommentViewModel> addReplyToComment(UUID parentCommentId, UUID accountId,
+        @Override
+        public Result<CommentViewModel> addReplyToComment(UUID parentCommentId, UUID accountId,
                                                       CreateCommentRequest createCommentRequest) {
         Optional<Object> parentCommentOptional = commentRepository.findById(parentCommentId);
         if (parentCommentOptional.isEmpty()) {
@@ -183,5 +173,37 @@ public class CommentServiceImpl implements CommentService {
                 (int) likeRepo.countByComment(comment),
                 new ArrayList<>(comment.getLikedUsers())
         );
+    }
+
+     private boolean isFollower(UUID accountId, UUID id) {
+        return followService.isFollower(accountId, id);
+    }
+
+    private Result<Post> validatePost(Optional<Post> postOptional) {
+    return postOptional.map(Result::success)
+          .orElseGet(() -> Result.failure(CommonErrors.ENTITY_NOT_PRESENT));
+    }
+
+    private Result<Account> validateAccount(Optional<Account> accountOptional) {
+        Account account = null;
+        if (accountOptional.isPresent()) {
+            account = accountOptional.get();
+
+        }
+        return Result.success(account);
+    }
+
+    private Comment createAndSaveComment(Post post, Account account, CreateCommentRequest request) {
+        Comment comment = new Comment();
+        comment.setPost(post);
+        comment.setAccount(account);
+        comment.setContent(request.getContent());
+        comment.setCreatedAt(LocalDateTime.now());
+        return commentRepository.save(comment);
+    }
+
+    private void sendNotification(UUID postCreatorId, Account account, Post post, Comment comment) {
+        notificationService.sendNotification(postCreatorId, account.getId(), NotificationType.COMMENT, post.getId(), comment.getId(),
+                account.getUsername() + " commented on your post.");
     }
 }

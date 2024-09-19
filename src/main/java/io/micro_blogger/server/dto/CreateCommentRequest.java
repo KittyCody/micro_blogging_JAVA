@@ -9,4 +9,9 @@ import lombok.Setter;
 public class CreateCommentRequest {
     @NotBlank(message = "content:must_not_be_blank")
     private String content;
+
+    public CreateCommentRequest(String content) {
+        this.content = content;
+    }
+
 }

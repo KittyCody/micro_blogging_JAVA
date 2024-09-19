@@ -30,4 +30,8 @@ public class Result<T> {
     public boolean isSuccess() {
         return isSuccess;
     }
+
+    public T getData() {
+        return value;
+    }
 }

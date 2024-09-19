@@ -24,4 +24,5 @@ public interface PostRepo extends JpaRepository<Post, UUID> {
     List<Post> findTop10ByAccountOrderByCreatedAtDesc(Account account);
 
     List<Post> searchByDescription(String keyword);
+
 }
