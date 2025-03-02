@@ -14,8 +14,11 @@ import java.util.UUID;
 @RequestMapping("/likes")
 public class LikeController {
 
-    @Autowired
-    private LikeService likeService;
+   private final LikeService likeService;
+
+   public LikeController(LikeService likeService) {
+       this.likeService = likeService;
+   }
 
     @PostMapping("/posts/{postId}")
     public ResponseEntity<ApiError> likePost(@PathVariable UUID postId, @RequestParam UUID accountId) {

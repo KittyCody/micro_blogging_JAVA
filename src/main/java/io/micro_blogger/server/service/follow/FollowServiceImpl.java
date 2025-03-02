@@ -11,7 +11,6 @@ import io.micro_blogger.server.repository.UserProfileRepo;
 import io.micro_blogger.server.service.post.PostService;
 import io.micro_blogger.server.viewmodel.FollowViewModel;
 import io.micro_blogger.server.viewmodel.PostViewModel;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,17 +23,17 @@ import java.util.stream.Collectors;
 @Service
 public class FollowServiceImpl implements FollowService {
 
-    @Autowired
-    private FollowRepo followRepo;
+    private final FollowRepo followRepo;
+    private final AccountRepo accountRepo;
+    private final UserProfileRepo userProfileRepo;
+    private final PostService postService;
 
-    @Autowired
-    private AccountRepo accountRepo;
-
-    @Autowired
-    private UserProfileRepo userProfileRepo;
-
-    @Autowired
-    private PostService postService;
+    public FollowServiceImpl(FollowRepo followRepo, AccountRepo accountRepo, UserProfileRepo userProfileRepo, PostService postService) {
+        this.followRepo = followRepo;
+        this.accountRepo = accountRepo;
+        this.userProfileRepo = userProfileRepo;
+        this.postService = postService;
+    }
 
     @Override
     @Transactional
@@ -153,15 +152,12 @@ public class FollowServiceImpl implements FollowService {
     }
 
     private void updateUserProfileCounts(UUID followerId, UUID followeeId) {
-        Optional<UserProfile> followerProfileOpt = userProfileRepo.findById(followerId);
-        Optional<UserProfile> followeeProfileOpt = userProfileRepo.findById(followeeId);
-
-        followerProfileOpt.ifPresent(profile -> {
+        userProfileRepo.findById(followerId).ifPresent(profile -> {
             profile.setFolloweeCount(followRepo.countByFollowerId(profile.getId()));
             userProfileRepo.save(profile);
         });
 
-        followeeProfileOpt.ifPresent(profile -> {
+        userProfileRepo.findById(followeeId).ifPresent(profile -> {
             profile.setFollowerCount(followRepo.countByFolloweeId(profile.getId()));
             userProfileRepo.save(profile);
         });

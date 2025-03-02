@@ -22,8 +22,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
-
-import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -78,11 +76,7 @@ public class PostServiceImpl implements PostService {
 
     private Result<String> uploadImage(MultipartFile imageFile) {
         String imageUrl;
-        try {
-            imageUrl = s3Service.uploadImage(imageFile);
-        } catch (IOException ex) {
-            return Result.failure(CommonErrors.IMAGE_UPLOAD_FAILED);
-        }
+        imageUrl = String.valueOf(s3Service.uploadImage(imageFile));
         return Result.success(imageUrl);
     }
 

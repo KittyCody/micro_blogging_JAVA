@@ -6,7 +6,7 @@ services:
     environment:
       POSTGRES_DB: micro_blog_db
       POSTGRES_USER: micro_blog_user
-      POSTGRES_PASSWORD: no_secrets_among_devs
+      POSTGRES_PASSWORD: no_more_free_days
     ports:
       - "6432:5432"
     volumes:
@@ -19,7 +19,7 @@ services:
     environment:
       POSTGRES_DB: micro_blog_test_db
       POSTGRES_USER: micro_blog_test_user
-      POSTGRES_PASSWORD: no_secrets_among_devs
+      POSTGRES_PASSWORD: no_more_free_days
     ports:
       - "7432:5432"
     volumes:

@@ -19,5 +19,4 @@ public interface FollowRepo extends CrudRepository<Follow, Long> {
 
     Follow findByFollowerIdAndFolloweeId(UUID id, UUID id1);
 
-    void flush();
 }

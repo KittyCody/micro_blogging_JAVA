@@ -61,7 +61,7 @@ public class CommentServiceImpl implements CommentService {
         Account account = accountOptional.get();
         UUID postCreatorId = post.getAccount().getId();
 
-        if (!followService.isFollower(accountId, postCreatorId)) {
+        if (followService.isFollower(accountId, postCreatorId)) {
             return Result.failure(CommonErrors.FORBIDDEN_OPERATION);
         }
 

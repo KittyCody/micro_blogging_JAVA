@@ -17,8 +17,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
-
-import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -27,17 +25,17 @@ import java.util.stream.Collectors;
 @Service
 public class UserProfileServiceImpl implements UserProfileService {
 
-    @Autowired
-    private UserProfileRepo userProfileRepository;
+    private final UserProfileRepo userProfileRepository;
+    private final UserDetailsService userDetailsService;
+    private final S3Service s3Service;
+    private final AccountService accountService;
 
-    @Autowired
-    private UserDetailsService userDetailsService;
-
-    @Autowired
-    private S3Service s3Service;
-
-    @Autowired
-    private AccountService accountService;
+    public UserProfileServiceImpl(UserProfileRepo userProfileRepository, UserDetailsService userDetailsService, S3Service s3Service, AccountService accountService) {
+        this.userProfileRepository = userProfileRepository;
+        this.userDetailsService = userDetailsService;
+        this.s3Service = s3Service;
+        this.accountService = accountService;
+    }
 
     @Override
     public Result<UserProfileViewModel> getUserProfile(String username) {
@@ -138,14 +136,10 @@ public class UserProfileServiceImpl implements UserProfileService {
             return Result.failure(CommonErrors.ENTITY_NOT_PRESENT);
         }
 
-        try {
-            String avatarUrl = s3Service.uploadImage(avatarFile);
-            userProfile.setAvatar(avatarUrl);
-            userProfileRepository.save(userProfile);
-            return Result.success(toResponse(userProfile));
-        } catch (IOException e) {
-            return Result.failure(CommonErrors.AVATAR_UPLOAD_FAILED);
-        }
+        String avatarUrl = String.valueOf(s3Service.uploadImage(avatarFile));
+        userProfile.setAvatar(avatarUrl);
+        userProfileRepository.save(userProfile);
+        return Result.success(toResponse(userProfile));
     }
 
     @Override

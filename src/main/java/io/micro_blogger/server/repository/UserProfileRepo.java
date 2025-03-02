@@ -1,6 +1,5 @@
 package io.micro_blogger.server.repository;
 
-import io.micro_blogger.server.model.Account;
 import io.micro_blogger.server.model.UserProfile;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;

@@ -7,6 +7,4 @@ public record FollowUserRequest(String username) {
         return username;
     }
 
-    public void setUsername(String followeeUsername) {
-    }
 }

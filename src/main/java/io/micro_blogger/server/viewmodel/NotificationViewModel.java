@@ -19,8 +19,7 @@ public class NotificationViewModel {
     private String message;
     private LocalDateTime createdAt;
 
-    public NotificationViewModel(UUID id, UUID recipientId, UUID senderId, NotificationType type,
-                                 UUID postId, UUID commentId, String message, LocalDateTime createdAt) {
+    public NotificationViewModel(UUID id, UUID recipientId, UUID senderId, NotificationType type, UUID postId, UUID commentId, String message, LocalDateTime createdAt) {
         this.id = id;
         this.recipientId = recipientId;
         this.senderId = senderId;
@@ -29,8 +28,5 @@ public class NotificationViewModel {
         this.commentId = commentId;
         this.message = message;
         this.createdAt = createdAt;
-    }
-
-    public NotificationViewModel(UUID id, UUID recipientId, UUID senderId, NotificationType type, Long postId, Long commentId, String message, LocalDateTime createdAt) {
     }
 }

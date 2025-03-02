@@ -18,13 +18,11 @@ import java.util.List;
 @RequestMapping("/users")
 public class UserProfileController {
 
-    @Autowired
-    private UserProfileService userProfileService;
+    private final UserProfileService userProfileService;
 
-//    /**
-//     * @param username
-//     * @return
-//     */
+    public UserProfileController(UserProfileService userProfileService) {
+        this.userProfileService = userProfileService;
+    }
 
     @GetMapping("/{username}")
     public ResponseEntity<UserProfileViewModel> getUserProfile(@PathVariable String username) {

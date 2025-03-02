@@ -13,11 +13,8 @@ import java.util.UUID;
 
 @Repository
 public interface LikeRepo extends JpaRepository<Like, UUID> {
-    Optional<Like> findByAccountAndPost(Account account, Post post);
 
     Optional<Like> findByAccountAndComment(Account account, Comment comment);
-
-    long countByPost(Post post);
 
     long countByComment(Comment comment);
 

@@ -20,8 +20,6 @@ public class CommonErrors {
 
     public static final ApiError DELETE_FORBIDDEN = new ApiError("forbidden:delete_forbidden", "You cannot delete another user's post");
 
-    public static final ApiError IMAGE_UPLOAD_FAILED = new ApiError("image:upload_failed", "Failed to upload image");
-
     public static final ApiError NULL_IMAGE_FILE = new ApiError("image:null_image", "The image file must not be null or empty");
 
     public static final ApiError BAD_REQUEST = new ApiError("word:null_keyword", "Key word cannot be empty.");
@@ -29,7 +27,5 @@ public class CommonErrors {
     public static final ApiError FORBIDDEN_OPERATION = new ApiError("post:unauthorized_view", "You are not authorized to perform that operation.");
 
     public static final ApiError INVALID_UUID = new ApiError("uuid:invalid_uuid", "Invalid UUID string");
-
-    public static final ApiError AVATAR_UPLOAD_FAILED = new ApiError("avatar:upload_failed", "Failed to upload avatar");
 
 }

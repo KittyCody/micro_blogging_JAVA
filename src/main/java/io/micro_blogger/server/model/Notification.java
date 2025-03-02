@@ -24,7 +24,7 @@ public class Notification {
     @Enumerated(EnumType.STRING)
     private NotificationType type;
 
-    private Long postId;
+    private UUID postId;
     private Long commentId;
 
     private String message;
@@ -35,7 +35,4 @@ public class Notification {
 
     }
 
-    public void setPostId(UUID postId) {
-
-    }
 }

@@ -17,8 +17,11 @@ import java.util.List;
 @RequestMapping("/users")
 public class FollowController {
 
-    @Autowired
-    private FollowService followService;
+    private final FollowService followService;
+
+    public FollowController(FollowService followService) {
+        this.followService = followService;
+    }
 
     @PostMapping("/follow")
     public ResponseEntity<?> followUser(

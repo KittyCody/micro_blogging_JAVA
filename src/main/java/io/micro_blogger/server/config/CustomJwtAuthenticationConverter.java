@@ -10,9 +10,10 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class CustomJwtAuthenticationConverter extends JwtAuthenticationConverter {
+
     protected Collection<GrantedAuthority> extractAuthorities(Jwt jwt) {
-        List<String> roles = (List<String>) jwt.getClaim("roles");
-        return roles.stream()
+        return jwt.getClaimAsStringList("roles")
+                .stream()
                 .map(SimpleGrantedAuthority::new)
                 .collect(Collectors.toList());
     }
